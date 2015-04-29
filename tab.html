@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="auther" content="fq" />
+<title>tab</title>
+<script type="text/javascript" src="js/tab.full.js"></script>
+<style>
+h2{ margin:0;}
+ul{ padding:0; margin:0;}
+
+.tab{ width:400px; margin:30px auto 0; font-size:12px; color:#555; border:1px solid #ccc;}
+.tab h2{ width:100%; overflow:hidden; font-size:12px; font-weight:normal; background:#f2f2f2;}
+.tab h2 span,
+.tab h2 a{ float:left; width:50px; line-height:25px; background:#ddd; border-right:1px solid #ccc; border-bottom:1px solid #ccc; text-align:center; cursor:pointer;}
+.tab h2 .current{ background:#fff; font-weight:bold; border-bottom:1px solid #fff;}
+.tab ul{ padding:25px;}
+</style>
+</head>
+
+<body>
+<div style=" width:80%; margin:20px auto; border:1px solid #ccc; background:#f2f2f2; padding:15px; font-size:14px; line-height:22px;">
+  <b>选项卡解说：</b><br />
+  1、支持一个页面多次引用；<br />
+  2、支持初始化指定显示第几个；<br />
+  3、点击/滑过等切换方式自定义；<br />
+  4、自动播放+鼠标动作切换；<br />
+  5、自动播放时鼠标移向内容区域暂停播放；<br />
+  6、切换完成后回调函数并支持相关参数。<br /><br />
+  
+  <b>函数引用说明：</b><br />
+  slide.init({handle:elems, content:elems, current:"current", mode:"click", speed:5000, callback:function(){...} });<br /><br />
+  引用基本格式 slide({...}); 中间的“...”所代表的就是参数内容。<br /><br />
+  参数说明：<br />
+  handle：表示选项卡分组名称的节点数组<br />
+  content：表示与分组名称对应的内容的节点数组<br />
+  current：表示当前分组名称的样式名称<br />
+  mode：表示切换方式，支持“click/mouseover/...”等鼠标事件<br />
+  speed：表示自动播放的间隔时间，有值则自动播放，单位毫秒<br />
+  delay: 启用mouseover时用来控制鼠标滑过的灵敏度，数值越大灵敏度越差<br />
+  what: 表示初始化定位到第几个，从0开始算起，数字不要超出范围<br />
+  callback：表示切换完成一次后的回调函数  回调函数返回三个参数【当前第几个，手柄节点，内容节点】 callback(i, elem1, elem2){...}<br /><br />
+  
+  对外接口：<br />
+  .show(2)  表示即时指定显示第几个tab   用法：如果是这样引用的slide = new Tab();  那么对外接口就是slide.show(3);  参数中的数字不要超出已有本组页签的个数，从0开始算起<br />
+  .stop()  表示停止播放，仅对自动播放有效  例：slide.stop(); <br />
+  .start()  表示重新开始播放，仅对自动播放有效  例：slide.start(); <br />
+  .prev()  切换至上一个  例：slide.prev(); <br />
+  .next()  切换至下一个  例：slide.next(); <br /><br />
+  缺点：<br />
+  当自动播放是，鼠标停留在手柄上还会自动播放，只有停留在内容上才能停止自动播放【可以实现都停止，只是连续滑动手柄后严重消耗内存，反应变慢，还为解决此问题】
+</div>
+<div style="width:80%; margin:auto; text-align:left; font-size:12px;">
+  <b>引用示例一：</b>
+  <p>// 鼠标滑过显示&nbsp;&nbsp;&nbsp; 暂不支持一次多个<br />
+var slide1 = new Tab();<br />
+slide1.init({<br />
+&nbsp; handle:document.getElementById(&quot;tab01&quot;).getElementsByTagName(&quot;h2&quot;)[0].getElementsByTagName(&quot;span&quot;),<br />
+&nbsp; content:document.getElementById(&quot;tab01&quot;).getElementsByTagName(&quot;ul&quot;),<br />
+&nbsp; current:&quot;current&quot;,<br />
+&nbsp; mode:&quot;mouseover&quot;,<br />
+&nbsp; delay:300<br />
+});</p>
+<p>var slide2 = new Tab();<br />
+slide2.init({<br />
+&nbsp; handle:document.getElementById(&quot;tab02&quot;).getElementsByTagName(&quot;h2&quot;)[0].getElementsByTagName(&quot;span&quot;),<br />
+&nbsp; content:document.getElementById(&quot;tab02&quot;).getElementsByTagName(&quot;ul&quot;),<br />
+&nbsp; current:&quot;current&quot;,<br />
+&nbsp; mode:&quot;mouseover&quot;<br />
+});</p></div>
+<div class="tab" id="tab01">
+  <h2>
+    <span class="current">标题0</span>
+    <span>标题1</span>
+    <span>标题2</span>
+    <span>标题3</span>
+  </h2>
+  <ul>滑过显示0</ul>
+  <ul style="display:none">滑过显示1</ul>
+  <ul style="display:none">滑过显示2</ul>
+  <ul style="display:none">滑过显示3</ul>
+</div>
+
+<div class="tab" id="tab02">
+  <h2>
+    <span>标题0</span>
+    <span>标题1</span>
+    <span>标题2</span>
+    <span>标题3</span>
+  </h2>
+  <ul style="display:none">滑过显示0</ul>
+  <ul style="display:none">滑过显示1</ul>
+  <ul style="display:none">滑过显示2</ul>
+  <ul style="display:none">滑过显示3</ul>
+</div>
+
+<div style="width:80%; margin:auto; text-align:left; font-size:12px;">
+  <b>引用示例二：</b>
+  <p>// 鼠标点击显示<br />
+var slide3 = new Tab();<br />
+slide3.init({<br />
+&nbsp; handle:document.getElementById(&quot;tab03&quot;).getElementsByTagName(&quot;h2&quot;)[0].getElementsByTagName(&quot;a&quot;),<br />
+&nbsp; content:document.getElementById(&quot;tab03&quot;).getElementsByTagName(&quot;ul&quot;),<br />
+&nbsp; current:&quot;current&quot;,<br />
+&nbsp; mode:&quot;click&quot;<br />
+});</p></div>
+<div class="tab" id="tab03">
+  <h2>
+    <a href="#">标题0</a>
+    <a href="#" class="current">标题1</a>
+    <a href="#">标题2</a>
+    <a href="#">标题3</a>
+  </h2>
+  <ul style="display:none">点击显示0</ul>
+  <ul>点击显示1</ul>
+  <ul style="display:none">点击显示2</ul>
+  <ul style="display:none">点击显示3</ul>
+</div>
+
+<div style="width:80%; margin:auto; text-align:left; font-size:12px;">
+  <b>引用示例三：</b>
+  <p>// 自动播放<br />
+var slide4 = new Tab();<br />
+slide4.init({<br />
+&nbsp; handle:document.getElementById(&quot;tab04&quot;).getElementsByTagName(&quot;h2&quot;)[0].getElementsByTagName(&quot;a&quot;),<br />
+&nbsp; content:document.getElementById(&quot;tab04&quot;).getElementsByTagName(&quot;ul&quot;),<br />
+&nbsp; current:&quot;current&quot;,<br />
+&nbsp; mode:&quot;mouseover&quot;,<br />
+&nbsp; speed:1000<br />
+});</p></div>
+<div class="tab" id="tab04">
+  <h2>
+    <a href="#" class="current">标题0</a>
+    <a href="#">标题1</a>
+    <a href="#">标题2</a>
+    <a href="#">标题3</a>
+  </h2>
+  <ul>自动播放0</ul>
+  <ul style="display:none">自动播放1</ul>
+  <ul style="display:none">自动播放2</ul>
+  <ul style="display:none">自动播放3</ul>
+</div>
+
+
+<script type="text/javascript">
+
+/*slide.init({
+  handle:document.getElementById("tab03").getElementsByTagName("h2")[0].getElementsByTagName("a"),
+  content:document.getElementById("tab03").getElementsByTagName("ul"),
+  current:"current",
+  mode:"click",
+  what:2,
+  callback:function(i, v1, v2){
+	alert(i);
+	alert(v1.innerHTML);
+	alert(v2.innerHTML);
+  }
+});*/
+
+// 鼠标滑过显示    暂不支持一次多个
+var slide1 = new Tab();
+slide1.init({
+  handle:document.getElementById("tab01").getElementsByTagName("h2")[0].getElementsByTagName("span"),
+  content:document.getElementById("tab01").getElementsByTagName("ul"),
+  current:"current",
+  mode:"mouseover",
+  delay:300
+});
+
+var slide2 = new Tab();
+slide2.init({
+  handle:document.getElementById("tab02").getElementsByTagName("h2")[0].getElementsByTagName("span"),
+  content:document.getElementById("tab02").getElementsByTagName("ul"),
+  current:"current",
+  mode:"mouseover",
+  what:1
+});
+
+// 鼠标点击显示
+var slide3 = new Tab();
+slide3.init({
+  handle:document.getElementById("tab03").getElementsByTagName("h2")[0].getElementsByTagName("a"),
+  content:document.getElementById("tab03").getElementsByTagName("ul"),
+  current:"current",
+  mode:"click"
+});
+
+// 自动播放
+var slide4 = new Tab();
+slide4.init({
+  handle:document.getElementById("tab04").getElementsByTagName("h2")[0].getElementsByTagName("a"),
+  content:document.getElementById("tab04").getElementsByTagName("ul"),
+  current:"current",
+  mode:"mouseover",
+  speed:1000
+});
+
+// 如果您的页面引用了JQuery，那么这里的引用可以这样写
+// slide({handle:$("#tab04 h2 a"), content:$("#tab04 ul"), current:"current", mode:"click"});
+</script>
+
+</body>
+</html>
